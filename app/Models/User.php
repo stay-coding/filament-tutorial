@@ -53,6 +53,12 @@ class User extends Authenticatable implements HasTenants
         'is_admin' => 'boolean'
     ];
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        $emailTrusted = str_ends_with($this->email, '@gmail.com') || str_ends_with($this->email, '@acielana.my.id');
+        return  $emailTrusted && $this->hasVerifiedEmail();
+    }
+
     public function getTenants(Panel $panel): Collection
     {
         return $this->teams;
